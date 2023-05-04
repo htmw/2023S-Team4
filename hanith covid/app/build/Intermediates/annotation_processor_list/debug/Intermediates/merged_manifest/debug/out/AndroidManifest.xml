@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.noured.covid19kit"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="30" />
+
+    <!-- Adding Camera, Write External Storage Permission -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Adding Internet Permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="androidx.multidex.MultiDexApplication"
+        android:allowBackup="true"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:debuggable="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="LET IT FREE"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:testOnly="true"
+        android:theme="@style/Theme.COVID19KIT" >
+        <activity android:name="com.noured.covid19kit.BotActivity" />
+        <activity android:name="com.noured.covid19kit.ContactActivity" />
+        <activity android:name="com.noured.covid19kit.TransitionActivity" />
+        <activity android:name="com.noured.covid19kit.CameraPredictionActivity" />
+        <activity android:name="com.noured.covid19kit.GalleryPredictionActivity" />
+        <activity android:name="com.noured.covid19kit.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
