@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 Self-Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('https://cdn.sanity.io/images/6dc08p2p/production/de9c3334053dabe112f8f4f3ae2eff24ad205ffd-1141x713.jpg/self-assessment-essential-learning.jpg?rect=0,59,1141,596&w=846&h=442&q=80&fit=min&auto=format&dpr=2') right/cover no-repeat;
+            background-size: contain;
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+
+        .wrapper {
+            width: 2000px;
+            height: 800px;
+            background: transparent;
+            border: 0px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(9px);
+            color: #000000;
+            border-radius: 0px;
+            padding: 30px 40px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: translateX(0);
+        }
+
+        .wrapper h1 {
+            font-size: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .input-container {
+            margin: 15px 0;
+        }
+
+        .wrapper .input-box {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
+        }
+
+        .input-box input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            border: 2px solid rgba(255, 255, 255, .2);
+            border-radius: 40px;
+            font-size: 16px;
+            color: #fff;
+            padding: 20px 45px 20px 20px;
+        }
+
+        .toggle-container {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .toggle-input:checked + .toggle-slider {
+            background-color: #4CAF50;
+        }
+
+        .toggle-input:focus + .toggle-slider {
+            box-shadow: 0 0 1px #4CAF50;
+        }
+
+        .toggle-input:checked + .toggle-slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        #submitBtn {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Modal Styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            display: none;
+            position: relative;
+            width: 300px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .modal h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .modal p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1>COVID-19 Self-Assessment</h1>
+
+        <div class="input-container">
+            <label>
+                <span class="toggle-container">
+                    <input type="checkbox" name="symptoms" class="toggle-input" onchange="toggleDarkMode('symptoms')">
+                    <span class="toggle-slider"></span>
+                </span>
+                Do you have any symptoms of COVID-19? (Fever, Cough, Shortness of breath, etc.)
+            </label>
+        </div>
+
+        <div class="input-container">
+            <label>
+                <span class="toggle-container">
+                    <input type="checkbox" name="contact" class="toggle-input" onchange="toggleDarkMode('contact')">
+                    <span class="toggle-slider"></span>
+                </span>
+                Have you been in close contact with someone diagnosed with COVID-19 in the last 14 days?
+            </label>
+        </div>
+        <div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="lossOfTaste" class="toggle-input" onchange="toggleDarkMode('lossOfTaste')">
+            <span class="toggle-slider"></span>
+        </span>
+        Have you experienced a sudden loss of taste or smell?
+    </label>
+</div>
+
+<div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="chills" class="toggle-input" onchange="toggleDarkMode('chills')">
+            <span class="toggle-slider"></span>
+        </span>
+        Are you having chills or experiencing shivering?
+    </label>
+</div>
+
+<div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="congestion" class="toggle-input" onchange="toggleDarkMode('congestion')">
+            <span class="toggle-slider"></span>
+        </span>
+        Do you have nasal congestion or a runny nose?
+    </label>
+</div>
+
+<div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="pinkEye" class="toggle-input" onchange="toggleDarkMode('pinkEye')">
+            <span class="toggle-slider"></span>
+        </span>
+        Are you experiencing redness or irritation in the eyes (conjunctivitis)?
+    </label>
+</div>
+
+<div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="skinRash" class="toggle-input" onchange="toggleDarkMode('skinRash')">
+            <span class="toggle-slider"></span>
+        </span>
+        Have you noticed any unusual skin rash or discoloration?
+    </label>
+</div>
+        <div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="musclePain" class="toggle-input" onchange="toggleDarkMode('musclePain')">
+            <span class="toggle-slider"></span>
+        </span>
+        Are you experiencing muscle or body aches?
+    </label>
+</div>
+
+<div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="gastrointestinal" class="toggle-input" onchange="toggleDarkMode('gastrointestinal')">
+            <span class="toggle-slider"></span>
+        </span>
+        Have you had any gastrointestinal symptoms, such as nausea, vomiting, or diarrhea?
+    </label>
+</div>
+
+<div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="fatigue" class="toggle-input" onchange="toggleDarkMode('fatigue')">
+            <span class="toggle-slider"></span>
+        </span>
+        Are you feeling unusually tired or fatigued?
+    </label>
+</div>
+
+<div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="headache" class="toggle-input" onchange="toggleDarkMode('headache')">
+            <span class="toggle-slider"></span>
+        </span>
+        Have you been experiencing persistent headaches?
+    </label>
+</div>
+
+<div class="input-container">
+    <label>
+        <span class="toggle-container">
+            <input type="checkbox" name="difficultySleeping" class="toggle-input" onchange="toggleDarkMode('difficultySleeping')">
+            <span class="toggle-slider"></span>
+        </span>
+        Are you having difficulty sleeping or insomnia?
+    </label>
+</div>
+<!-- (Add more input-container as needed) -->
+
+        <button id="submitBtn" onclick="showModal()">Submit</button>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="modal" id="modal">
+            <h2>Necessary precautions to be taken</h2>
+            <p id="modalMessage"></p>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode(checkboxName) {
+            document.body.classList.toggle('dark-mode', document.querySelector(`input[name="${checkboxName}"]`).checked);
+        }
+
+        function showModal() {
+    const symptomsChecked = document.querySelector('input[name="symptoms"]').checked;
+    const contactChecked = document.querySelector('input[name="contact"]').checked;
+    const lossOfTasteChecked = document.querySelector('input[name="lossOfTaste"]').checked;
+    const chillsChecked = document.querySelector('input[name="chills"]').checked;
+    const congestionChecked = document.querySelector('input[name="congestion"]').checked;
+    const pinkEyeChecked = document.querySelector('input[name="pinkEye"]').checked;
+    const skinRashChecked = document.querySelector('input[name="skinRash"]').checked;
+    const musclePainChecked = document.querySelector('input[name="musclePain"]').checked;
+    const gastrointestinalChecked = document.querySelector('input[name="gastrointestinal"]').checked;
+    const fatigueChecked = document.querySelector('input[name="fatigue"]').checked;
+    const headacheChecked = document.querySelector('input[name="headache"]').checked;
+    const difficultySleepingChecked = document.querySelector('input[name="difficultySleeping"]').checked;
+
+    const modalMessage = document.getElementById('modalMessage');
+
+    if (
+        symptomsChecked || contactChecked || lossOfTasteChecked ||  pinkEyeChecked || skinRashChecked || musclePainChecked ||
+        gastrointestinalChecked || fatigueChecked
+    ) {
+        modalMessage.innerText = "Please stay away from everyone and make yourself isolated. Seek medical advice if necessary.";
+    } else {
+        modalMessage.innerText = "You may take necessary precautions, but it's essential to stay vigilant and monitor your health.";
+    }
+
+            document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('modal').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

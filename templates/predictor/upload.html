@@ -1,0 +1,55 @@
+{% extends "header.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container py-5">
+        <h1>Upload Xray to Predict</h1>
+        <form method="post" enctype="multipart/form-data" style="max-width: 500px; margin: 0 center;" id="uploadForm">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn btn-primary" type="button" id="uploadButton">Upload</button>
+        </form>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalLabel">Prediction Result</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% if xray %}
+                        <p class="text-left">The prediction test for {{ xray.name }} results {{ xray.result }}</p>
+                    {% else %}
+                        <p class="text-left">No result available</p>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Attach click event to the upload button
+            $('#uploadButton').on('click', function () {
+                // Submit the form (assuming you have a submit button in your form)
+                $('#uploadForm').submit();
+            });
+
+            // Show the modal when the page is loaded and xray result is available
+            {% if xray %}
+                $('#resultModal').modal('show');
+            {% endif %}
+        });
+    </script>
+{% endblock %}

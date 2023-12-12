@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Details and COVID-19 Form</title>
+    <style>
+        body {
+             display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url(https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/3174456/profile-clipart-md.png) no-repeat;
+            background-size: 40% auto;
+            background-position: center center;
+            font-family: Arial, sans-serif;
+            margin: 0px;
+        }
+        .form-wrapper {
+            width: 80%; /* Adjust as needed */
+            background: transparent;
+            border: 0px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(9px);
+            color: #000000;
+            border-radius: 0px;
+            padding: 30px 40px;
+            left: 0;
+            top: 0;
+            transform: translateX(0);
+        }
+        .container {
+            background-color: ;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="date"], select, input[type="tel"], input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-wrapper">
+        <div class="container">
+            <h1>Personal Details and COVID-19 Form</h1>
+            <form id="covidForm">
+                <!-- Personal Information -->
+                <h2>Personal Information</h2>
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" required><br>
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required><br>
+                <label for="date_of_birth">Date of Birth:</label>
+                <input type="date" id="date_of_birth" name="date_of_birth" required><br>
+                <label for="phone_number">Phone Number:</label>
+                <input type="tel" id="phone_number" name="phone_number" required><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br>
+
+                <!-- COVID-19 Questions -->
+                <h2>COVID-19 Questions</h2>
+                <label for="travel_history">Have you traveled recently?</label>
+                <input type="checkbox" id="travel_history" name="travel_history"><br>
+                <label for="symptoms">Do you have COVID-19 symptoms?</label>
+                <input type="checkbox" id="symptoms" name="symptoms"><br>
+                <label for="contact_positive">Have you been in close contact with a COVID-19 positive person?</label>
+                <input type="checkbox" id="contact_positive" name="contact_positive"><br>
+                <label for="vaccinated">Are you vaccinated for COVID-19?</label>
+                <input type="checkbox" id="vaccinated" name="vaccinated"><br>
+
+                <!-- Additional Information -->
+                <h2>Additional Information</h2>
+                <label for="travel_history_details">If you've traveled, please provide details:</label>
+                <textarea id="travel_history_details" name="travel_history_details"></textarea><br>
+                <label for="symptoms_details">If you have symptoms, please describe them:</label>
+                <textarea id="symptoms_details" name="symptoms_details"></textarea><br>
+                <label for="contact_positive_details">If you've been in close contact, provide details:</label>
+                <textarea id="contact_positive_details" name="contact_positive_details"></textarea><br>
+
+                <input type="submit" value="Submit" id="submit">
+            </form>
+        </div>
+    </div>
+
+    <!-- Include Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"></script>
+
+    <script type="module">
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzyC0fZSTBoTbzsZw8eIqMduGes7_yVf4",
+            authDomain: "project-62832.firebaseapp.com",
+            databaseURL: "https://project-62832-default-rtdb.firebaseio.com",
+            projectId: "project-62832",
+            storageBucket: "project-62832.appspot.com",
+            messagingSenderId: "669080652409",
+            appId: "1:669080652409:web:e5c7476b70da7e59f2e2a8"
+        };
+
+        // Initialize Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        document.getElementById("covidForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const data = {
+                first_name: document.getElementById("first_name").value,
+                last_name: document.getElementById("last_name").value,
+                date_of_birth: document.getElementById("date_of_birth").value,
+                phone_number: document.getElementById("phone_number").value,
+                email: document.getElementById("email").value,
+                travel_history: document.getElementById("travel_history").checked,
+                symptoms: document.getElementById("symptoms").checked,
+                contact_positive: document.getElementById("contact_positive").checked,
+                vaccinated: document.getElementById("vaccinated").checked,
+                travel_history_details: document.getElementById("travel_history_details").value,
+                symptoms_details: document.getElementById("symptoms_details").value,
+                contact_positive_details: document.getElementById("contact_positive_details").value
+            };
+
+            // Reference to your Firebase Realtime Database
+            const dataRef = ref(db, "covid_data");
+
+            // Save data to Firebase
+            set(dataRef, data)
+                .then(() => {
+                    console.log("Data saved successfully.");
+                    alert("Data submitted successfully!");
+                })
+                .catch((error) => {
+                    console.error("Data could not be saved.", error);
+                    alert("An error occurred. Please try again.");
+                });
+        });
+    </script>
+</body>
+</html>

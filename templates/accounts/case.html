@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./covid.png" />
+    <title>GET COVID-19 DATA HERE</title>
+    <style>
+      body {
+        text-align: center;
+        align-items: center;
+        background: #f4f4f4;
+        font-family: 'Arial', sans-serif;
+      }
+
+      .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        margin-top: 50px;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .inputElement {
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 60%;
+        margin-bottom: 15px;
+      }
+
+      .btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        background: #3498db;
+        cursor: pointer;
+        font-size: 18px;
+        color: #fff;
+        transition-duration: 0.3s;
+      }
+
+      .btn:hover {
+        background: #2980b9;
+      }
+
+      #container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-top: 20px;
+      }
+
+      .dataDiv {
+        width: 200px;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .dataDiv img {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        color: #333;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>COVID-19 TRACKER</h1>
+      <input
+        type="text"
+        class="inputElement"
+        placeholder="Enter country name"
+      />
+      <button class="btn">Get Data</button>
+      <br />
+      <br />
+      <div id="container">
+        <div class="dataDiv">
+          <img src="https://www.hopkinsmedicine.org/-/media/project/jhm/icons/coronavirus/vomit.svg?iar=0&hash=B008E34A458EE9588F1DBA77A282933C" alt="Active Cases Icon" />
+          <br />
+          <h3>Active Cases</h3>
+          <p class="activeCases"></p>
+        </div>
+        <div class="dataDiv">
+          <img
+            src="https://www.hopkinsmedicine.org/-/media/project/jhm/icons/coronavirus/sleeping-at-home.png?h=229&iar=0&w=229&hash=527BB0236F362F351B09D03B2072DF24"
+            alt="New Cases Icon"
+          />
+          <br />
+          <h3>New Cases</h3>
+          <p class="newCases"></p>
+        </div>
+        <div class="dataDiv">
+          <img
+            src="https://www.hopkinsmedicine.org/-/media/project/jhm/icons/coronavirus/shot.jpg?h=1834&iar=0&w=2667&hash=94434F10826B68112F9B5999B4E9C38E"
+            alt="Recovered Cases Icon"
+          />
+          <br />
+          <h3>Recovered Cases</h3>
+          <p class="recoveredCases"></p>
+        </div>
+        <div class="dataDiv">
+          <img
+            src="https://www.hopkinsmedicine.org/-/media/project/jhm/icons/coronavirus/distance.png?h=229&iar=0&w=229&hash=C19CCF8B6DB826C6EA412BCE21F5A606"
+            alt="Total Cases Icon"
+          />
+          <br />
+          <h3>Total Cases</h3>
+          <p class="totalCases"></p>
+        </div>
+        <div class="dataDiv">
+          <img
+            src="https://newsroom.uw.edu/sites/default/files/covid_emergency_gettyimages2-1215574227.jpg"
+            alt="Total Deaths Icon"
+          />
+          <br />
+          <h3>Total Deaths</h3>
+          <p class="totalDeaths"></p>
+        </div>
+        <div class="dataDiv">
+          <img
+            src="https://www.hopkinsmedicine.org/-/media/project/jhm/icons/coronavirus/get-tested.jpg?h=229&iar=0&w=229&hash=F38B919E6FC1295FAC59DD925BE0D5CE"
+            alt="Total Tests Icon"
+          />
+          <br />
+          <h3>Total Tests</h3>
+          <p class="totalTests"></p>
+        </div>
+      </div>
+    </div>
+    <script>
+      const btn = document.querySelector(".btn");
+      const inputElement = document.querySelector(".inputElement");
+      btn.addEventListener("click", getData);
+      function getData() {
+        let country = inputElement.value;
+        fetch(`https://covid-193.p.rapidapi.com/statistics?country=${country}`, {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "covid-193.p.rapidapi.com",
+            "x-rapidapi-key": "40ab946a38msh09949d6efa9210dp175c83jsn725e7fc83691",
+          },
+        })
+          .then((response) => response.json())
+          .then((json) => {
+            let data = json.response[0];
+            document.querySelector(".activeCases").innerText = data.cases.active;
+            document.querySelector(".newCases").innerText = data.cases.new;
+            document.querySelector(".recoveredCases").innerText =
+              data.cases.recovered;
+            document.querySelector(".totalCases").innerText = data.cases.total;
+            document.querySelector(".totalDeaths").innerText = data.deaths.total;
+            document.querySelector(".totalTests").innerText = data.tests.total;
+          });
+      }
+    </script>
+  </body>
+</html>

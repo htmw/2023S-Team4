@@ -1,0 +1,40 @@
+{% extends "header.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container py-5">
+    <h1>Xray History</h1>
+        {% if xrays %}
+            {% if image %}
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+                <p>{{ image }}</p>
+                <img src="/media/{{ image }}" width="300" height="300" alt="{{ image }}">
+                </div>
+            {% endif %}
+            <br/>
+        <table class="table">
+          <thead class="table-light">
+            <tr>
+                <td>#</td>
+                <td>Name</td>
+                <td>Created on</td>
+                <td>Image URL</td>
+                <td>Result</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% for xray in xrays %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ xray.name }}</td>
+                <td>{{ xray.created_at }}</td>
+                <td><a href="/predictor/history?img={{ xray.image }}">{{ xray.image }}</a></td>
+                <td>{{ xray.result }}</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+            <p>No uploads yet..</p>
+        {% endif %}
+    </div>
+{% endblock %}

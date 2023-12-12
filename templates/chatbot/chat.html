@@ -1,0 +1,64 @@
+<div style="margin: 20px">
+<h1>Support Bot</h1>
+<form method="post" id="chat-form">
+    {% csrf_token %}
+    <input type="text" name="message" id="message" autocomplete="off">
+    <button class="btn btn-primary" type="submit">Send</button>
+    <button class="btn btn-danger" id="clear">Clear</button>
+</form>
+<div id="chat-log"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var message_list = [];
+    $(document).ready(function() {
+        if(sessionStorage.getItem("msgs")===null) {
+            sessionStorage.setItem("msgs", JSON.stringify(message_list));
+        } else {
+            let chat_log = $('#chat-log');
+            chat_log.empty();
+            message_list = JSON.parse(sessionStorage.getItem("msgs"));
+            for (let i = 0; i < message_list.length; i+=2) {
+                chat_log.append('<p><strong>You:</strong> ' + message_list[i] + '</p>');
+                if(i+1 < message_list.length) {
+                    chat_log.append('<p><strong>Bot:</strong> ' + message_list[i+1] + '</p>');
+                }
+            }
+        }
+        $('#clear').click(function (event){
+            event.preventDefault();
+            message_list = [];
+            sessionStorage.setItem("msgs", JSON.stringify(message_list));
+            $('#chat-log').empty();
+        })
+        $('#chat-form').submit(function(event) {
+            event.preventDefault();
+            let msg = $('#message').val();
+            let chat_log = $('#chat-log');
+            message_list = JSON.parse(sessionStorage.getItem("msgs"));
+            if(msg!==''){
+                message_list.push(msg);
+            }
+            chat_log.empty();
+            for (let i = 0; i < message_list.length; i+=2) {
+                chat_log.append('<p><strong>You:</strong> ' + message_list[i] + '</p>');
+                if(i+1 < message_list.length) {
+                    chat_log.append('<p><strong>Bot:</strong> ' + message_list[i+1] + '</p>');
+                }
+            }
+            $.ajax({
+                url: '/chat/',
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(data) {
+                    message_list.push(data.bot_response);
+                    $('#chat-log').append('<p><strong>Bot:</strong> ' + data.bot_response + '</p>');
+                    sessionStorage.setItem("msgs", JSON.stringify(message_list));
+                    let msg = $('#message');
+                    msg.val('');
+                    msg.focus();
+                }
+            });
+        });
+    });
+</script>
+</div>

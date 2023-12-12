@@ -1,0 +1,17 @@
+ChatterBot==1.0.4
+Django==4.2.4
+keras==2.13.1
+numpy==1.24.3
+django-crispy-forms==2.0
+crispy_bootstrap5==0.7
+# python 3.9
+# pip install chatterbot==1.0.4 pytz
+# python manage.py migrate django_chatterbot
+keras==2.13.1
+matplotlib==3.7.2
+numpy==1.24.3
+Pillow==10.0.0
+Pillow==10.0.0
+PyQt5==5.15.9
+tensorflow==2.13.0
+tensorflow_macos==2.13.0
